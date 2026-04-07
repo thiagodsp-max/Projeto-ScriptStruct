@@ -11,9 +11,9 @@ public class Arquivo {
     }
 
     //Outros Métodos
-    public void editar(String lore){
-        this.texto=lore;
-        //Posterior substituição por um Método que permite armazenar o que o usuário escrever no JTextArea
+    public void editar(Editor lore){
+        //Agora o usuario armazena o que ele escreveu no JTextArea (em desenvolvimento)
+        this.texto=lore.getTexto();
     }
   
     public void exibir(){
