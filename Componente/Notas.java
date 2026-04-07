@@ -2,20 +2,22 @@
 
 public class Notas {
     //Atributos
+    int id;
     String nome;
     String descricao;
     boolean box;//Para indicar os status da anotação
     
     //Construtor
-    public Notas(String title){
+    public Notas(int uni,String title){
+        this.id=uni;
         this.nome=title;
         this.box=false;//Inicializa a tarefa como não concluída
     }
 
     //Outros métodos
-    public void editarnota(String change){
+    public void editarnota(Editor change){
         //Para melhor detalhar aquela anotação
-        this.descript=change;
+        this.descricao=change.getTexto();
     }
   
     //Método a ser alterado para compreender fenômenos on click()
