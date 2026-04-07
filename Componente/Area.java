@@ -1,23 +1,33 @@
-//Baseado no conceito Janela/Tela
-
+//Baseado no conceito Tela
 import javax.swing.*;
-//Uso de Bibliotecas que permitam desenvolver o App
+import java.awt.*;
 
-public class Area extends JFrame{
-    //Atributo
-    int id;
-    //As janelas precisam ter a capacidade de conter diferentes Objetos dentro de si
-    //Implementar Subclasses para cada tipo de elemento, se assim for necessário
-  
-    //Construtor Geral
-    public Area(String titulo){
-        //Criando Janela:
-        setTitle(titulo);
-        setSize(600,500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //O Conteúdo abaixo do Título dependerá de qual Janela
-        //Aplicar uma Função que possa sofrer Override pelas Sub-classes
+//Aqui é para representar os blocos que compõem a janela, a menor
+//unidade na composição das imagens presentes na Tela
+public abstract class Area extends JPanel {
+    protected JPanel cabecalho;
+    protected JPanel conteudo;
+    protected JPanel rodape;
+
+    public Area() {
+        setLayout(new BorderLayout());
+
+        cabecalho = new JPanel();
+        conteudo = new JPanel();
+        rodape = new JPanel();
+
+        add(cabecalho, BorderLayout.NORTH);
+        add(conteudo, BorderLayout.CENTER);
+        add(rodape, BorderLayout.SOUTH);
+
+        montarCabecalho();
+        montarConteudo();
+        montarRodape();
     }
-    //Outros Métodos
-    //Função para transitar entre as telas
+    //Parâmetros para definir opções e títulos
+    protected abstract void montarCabecalho();
+    //Parâmetros para definir o tipo de objeto presente
+    protected abstract void montarConteudo();
+    //Parâmetros para definir opções
+    protected abstract void montarRodape();
 }
