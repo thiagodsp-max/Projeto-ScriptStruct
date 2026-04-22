@@ -1,23 +1,29 @@
-//Baseado no Conceito de Arquivos de Texto
+package Beta;
 
 public class Arquivo {
-    //Atributos
-    String titulo;
-    String texto;
+    //São os arquivos de Texto, aqui iremos definir que eles recebem
+    String title;
+    String story;
 
-    //Construtor
-    public void Arquivo(String nome){
-        this.titulo=nome;
+    //Criando um Novo Arquivo
+    public Arquivo(String nome, String letra){
+        this.title=nome;
+        this.story=letra;
     }
 
-    //Outros Métodos
-    public void editar(Editor lore){
-        //Agora o usuario armazena o que ele escreveu no JTextArea (em desenvolvimento)
-        this.texto=lore.getTexto();
+    public String getTitle(){
+        return title;
     }
-  
-    public void exibir(){
-        System.out.printf(titulo);
-        System.out.printf(texto);
+
+    public String getStory(){
+        return story;
+    }
+
+    public void setTitle(String titulo){
+        this.title=titulo;
+    }
+
+    public void setStory(String letra){
+        this.story=letra;
     }
 }
