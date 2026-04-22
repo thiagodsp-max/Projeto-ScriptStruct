@@ -1,7 +1,7 @@
 package Struct;
 
-import Beta.Livro;
-import Beta.Texto;
+import Beta.Projeto;
+import Beta.Arquivo;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -16,10 +16,10 @@ public class TextEditor extends Base{
     JScrollPane scrollPane;
     JSpinner fontsize;
     JComboBox fontype;
-    Texto txt;
+    Arquivo txt;
     //Janela orientada para permitir a Escrita do usuário
 
-    public TextEditor(Texto txt){
+    public TextEditor(Arquivo txt){
         this.txt=txt;
     }
 
@@ -87,7 +87,7 @@ public class TextEditor extends Base{
         });
 
         salve.addActionListener(e-> {
-            Texto doc=getDoc();
+            Arquivo doc=getDoc();
             txt.setStory(textArea.getText());
             txt.setTitle(titulo.getText());
             System.out.println("Sua narrativa foi salva!!");
@@ -100,10 +100,10 @@ public class TextEditor extends Base{
         rodape.add(opt);
     }
 
-    public Texto getDoc(){
+    public Arquivo getDoc(){
         String big=titulo.getText();
         String sma=textArea.getText();
-        return new Texto(big,sma);
+        return new Arquivo(big,sma);
     }
 
 }
