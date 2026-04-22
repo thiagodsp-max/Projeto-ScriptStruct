@@ -1,27 +1,43 @@
+package Beta;
+
 //Baseado no Conceito de Anotações
 
 public class Notas {
     //Atributos
-    int id;
+    //int id;
     String nome;
     String descricao;
-    boolean box;//Para indicar os status da anotação
-    
-    //Construtor
-    public Notas(int uni,String title){
-        this.id=uni;
+    boolean feito;
+
+    //Construtor Inicial
+    public Notas(String title){
+        //this.id=uni;
         this.nome=title;
-        this.box=false;//Inicializa a tarefa como não concluída
+        this.descricao="";
+        this.feito=false;
     }
 
-    //Outros métodos
-    public void editarnota(Editor change){
-        //Para melhor detalhar aquela anotação
-        this.descricao=change.getTexto();
+    //Métodos Padrão (Gets e is)
+    public String getName(){
+        return nome;
     }
-  
-    //Método a ser alterado para compreender fenômenos on click()
-    public void concluir(){
-        box=true;//Troca os status da tarefa
+    public String getDetails(){
+        return descricao;
+    }
+    public void setDetails(String texto){
+        descricao=texto;
+    }
+    //Métodos para permitir Interação
+
+    public Boolean getstatus(){
+        return feito;
+    }
+    public void setstatus(){
+        if(feito==true){
+            feito=false;
+        }
+        else {
+            feito = true;
+        }
     }
 }
