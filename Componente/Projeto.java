@@ -1,16 +1,31 @@
-//Baseado no conceito de Projeto de Livro
+package Beta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Projeto {
-    //Atributos
-    String nome;
-    Pasta[] partes; //Os arquivos ficam armazenados nas cate
-    int count=0;
+    //O Equivalente de Projeto
+    //Depende que já tenham sido criadas:
+    //- Categorias
+    //- Texto
+    String name;
+    List<Pasta> secao;
+    //= new ArrayList<>();
 
-    //Construtor
-    public Projeto(String titulo){
-        this.nome=titulo;
-        //O array Partes é inicializado com uma Categoria "Padrão" para facilitar o uso
+    public Projeto(String name){
+        this.name = name;
+        this.secao = new ArrayList<>();
     }
-    //Métodos a implementar
-    //Método para Adicionar uma nova categoria/novo arquivo
+
+    public String getName(){
+        return name;
+    }
+
+    public List<Pasta> getSecao(){
+        return secao;
+    }
+
+    public void addSecao(Pasta v){
+        secao.add(v);
+    }
 }
