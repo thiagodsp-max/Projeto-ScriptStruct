@@ -10,7 +10,7 @@ public class App extends JFrame {
         setLocationRelativeTo(null); // centraliza na tela
 
         // Aqui definimos qual das nossas telas vai ser a inicial
-        setContentPane(new TextEditor());
+        setContentPane(new Collections());
         setVisible(true);
     }
 
