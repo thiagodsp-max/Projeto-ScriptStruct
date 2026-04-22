@@ -7,11 +7,14 @@ import java.awt.*;
 
 public class ToDoList extends Base{
 
-    //Essa classe nos permite implementar um espaço reservado só para as Anotações
     JPanel notes;
     @Override
     protected void montarCabecalho() {
-
+        JButton back = new JButton("Projetos de Livros");
+        back.addActionListener(e_->{
+            trocada(new Collections());
+        });
+        cabecalho.add(back);
         JLabel titulo = new JLabel("Lista de Anotações");
         cabecalho.add(titulo);
         JButton plus = new JButton("Config");
