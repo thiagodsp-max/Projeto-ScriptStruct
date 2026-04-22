@@ -1,8 +1,8 @@
 package Struct;
 
-import Beta.Categorias;
-import Beta.Livro;
-import Beta.Texto;
+import Beta.Pasta;
+import Beta.Projeto;
+import Beta.Arquivo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +16,9 @@ public class BookOrder extends Base{
     protected void montarCabecalho() {
         JButton back = new JButton("Voltar");
         cabecalho.add(back);
+        back.addActionListener(e_->{
+            trocada(new Collections());
+        });
         titulo = new JTextField("Livro 01",15);
         cabecalho.add(titulo);
         JButton plus = new JButton("Config");
@@ -30,8 +33,8 @@ public class BookOrder extends Base{
         JScrollPane scroll= new JScrollPane(listaPasta);
         conteudo.add(scroll,BorderLayout.CENTER);
 
-        addPasta(new Categorias("Categoria Padrão"));
-        /*for(Categorias y : libro.getSecao()){
+        addPasta(new Pasta("Categoria Padrão"));
+        /*for(Pasta y : libro.getSecao()){
             addPasta(y);
         }*/
 
@@ -41,29 +44,21 @@ public class BookOrder extends Base{
     protected void montarRodape() {
         //Botão para criar nova categoria ou novo arquivo
         JButton pasta = new JButton("Nova Pasta");
-        JButton arquivo= new JButton("Novo Texto");
+        JButton arquivo= new JButton("Novo Arquivo");
         rodape.add(pasta);
         rodape.add(arquivo);
 
         pasta.addActionListener(e->{
             String nome=JOptionPane.showInputDialog("Nome da Categoria");
             if(nome != null && !nome.isEmpty()){
-                Categorias pst=new Categorias(nome);
+                Pasta pst=new Pasta(nome);
                 addPasta(pst);
                 //libro.addSecao(pst);
-            }
-
-        });
-
-        arquivo.addActionListener(e -> {
-            String name=JOptionPane.showInputDialog("Nome do Arquivo:");
-            if(name!=null && !name.isEmpty()){
-                Texto z=new Texto(name,"");
             }
         });
     }
 
-    public void addPasta(Categorias Pasta){
+    public void addPasta(Pasta Pasta){
         JPanel pastapainel = new JPanel();
         pastapainel.setLayout(new BorderLayout());
         pastapainel.setBorder(BorderFactory.createTitledBorder(Pasta.getNome()));
@@ -74,7 +69,7 @@ public class BookOrder extends Base{
             String nome=JOptionPane.showInputDialog("Nome do Texto:");
 
             if(nome != null && !nome.isEmpty()){
-                Texto novo=new Texto(nome,"");
+                Arquivo novo=new Arquivo(nome,"");
                 Pasta.addTexto(novo);
                 JButton botao=criarBotao(novo);
                 capitulos.add(botao);
@@ -83,7 +78,7 @@ public class BookOrder extends Base{
             }
         });
         capitulos.add(addTexto);
-        for (Texto x: Pasta.getTextos()){
+        for (Arquivo x: Pasta.getTextos()){
             capitulos.add(criarBotao(x));
         }
         pastapainel.add(capitulos, BorderLayout.CENTER);
@@ -91,7 +86,7 @@ public class BookOrder extends Base{
         listaPasta.revalidate();
     }
 
-    private JButton criarBotao(Texto archive){
+    private JButton criarBotao(Arquivo archive){
         JButton bt= new JButton(archive.getTitle());
         bt.addActionListener(e -> {
             System.out.println("O seguinte arquivo foi aberto:"+archive.getTitle());
