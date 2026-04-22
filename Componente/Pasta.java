@@ -1,21 +1,28 @@
-//Baseado no Conceito de Categorias de Texto ou Pasta de Arquivos
+package Beta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pasta {
-    //Atributo
+    //Depende que já se tenha criado a classe de Texto
+    //Equivalente à Pasta
     String nome;
-    Arquivo[] chapters;//Precisa inicializar vazio, para ser preenchido com o tempo
-    int count;//Permite delimitar o tamanho dos Capítulos dentro da Categoria
-    
-    //Construtor()
-    public void Pasta(String name){
-       this.nome=name;
-       this.count=0;//A pasta está vazia
+    List<Arquivo> arquivos;
+
+    public Pasta(String name){
+        this.nome=name;
+        this.arquivos=new ArrayList<>();
     }
-    
-    //Outros métodos
-    public void adicionar(Arquivo texto){
-        //A ideia é colocar o Capítulo mais recente na última posição livre, para evitar que os Arquivos se sobreponham
-        chapters[count]=texto;
-        this.count++;
+
+    public String getNome(){
+        return nome;
+    }
+
+    public List<Arquivo> getTextos(){
+        return arquivos;
+    }
+
+    public void addTexto(Arquivo x){
+        arquivos.add(x);
     }
 }
