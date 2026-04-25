@@ -1,6 +1,6 @@
-package Struct;
+package Estrutura;
 
-import Beta.Arquivo;
+import Componente.Arquivo;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
