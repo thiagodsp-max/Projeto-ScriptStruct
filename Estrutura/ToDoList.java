@@ -1,6 +1,6 @@
-package Struct;
+package Estrutura;
 
-import Beta.Notas;
+import Componente.Notas;
 
 import javax.swing.*;
 import java.awt.*;
