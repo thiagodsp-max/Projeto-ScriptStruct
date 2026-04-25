@@ -11,20 +11,14 @@ public class BookOrder extends Base{
     JTextField titulo;
     JPanel listaPasta;
     //Janela que mostra as Categorias e Arquivos de um Livro
-
-    @Override
-    protected void montarCabecalho() {
-        JButton back = new JButton("Voltar");
-        cabecalho.add(back);
-        back.addActionListener(e_->{
-            trocada(new Collections());
-        });
-        titulo = new JTextField("Livro 01",15);
-        cabecalho.add(titulo);
-        JButton plus = new JButton("Config");
-        cabecalho.add(plus);
+    public BookOrder(Projeto book){
+        montarCabecalho("Voltar",book.getName());
+        montarConteudo();
+        montarRodape();
     }
-
+    protected void changetela() {
+        trocada(new Collections()); // padrão, pode sobrescrever
+    }
     @Override
     protected void montarConteudo() {
         conteudo.setLayout(new BorderLayout());
@@ -44,16 +38,16 @@ public class BookOrder extends Base{
     protected void montarRodape() {
         //Botão para criar nova categoria ou novo arquivo
         JButton pasta = new JButton("Nova Pasta");
-        JButton arquivo= new JButton("Novo Arquivo");
+        //JButton arquivo= new JButton("Novo Arquivo");
         rodape.add(pasta);
-        rodape.add(arquivo);
+        //rodape.add(arquivo);
 
         pasta.addActionListener(e->{
             String nome=JOptionPane.showInputDialog("Nome da Categoria");
             if(nome != null && !nome.isEmpty()){
                 Pasta pst=new Pasta(nome);
                 addPasta(pst);
-                //libro.addSecao(pst);
+                //book.addSecao(pst);
             }
         });
     }
@@ -90,7 +84,7 @@ public class BookOrder extends Base{
         JButton bt= new JButton(archive.getTitle());
         bt.addActionListener(e -> {
             System.out.println("O seguinte arquivo foi aberto:"+archive.getTitle());
-            TextEditor chapter = new TextEditor(archive);
+            TextEditor chapter = new TextEditor(archive,this);
             //chapter.setDoc
             trocada(chapter);
         });
