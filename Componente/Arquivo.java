@@ -1,4 +1,4 @@
-package Beta;
+package Componente;
 
 public class Arquivo {
     //São os arquivos de Texto, aqui iremos definir que eles recebem
