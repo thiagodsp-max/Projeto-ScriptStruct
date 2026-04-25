@@ -1,4 +1,4 @@
-package Beta;
+package Componente;
 
 import java.util.ArrayList;
 import java.util.List;
