@@ -1,8 +1,8 @@
-package Struct;
+package Estrutura;
 
-import Beta.Pasta;
-import Beta.Projeto;
-import Beta.Arquivo;
+import Componente.Pasta;
+import Componente.Projeto;
+import Componente.Arquivo;
 
 import javax.swing.*;
 import java.awt.*;
