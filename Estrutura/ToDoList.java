@@ -8,17 +8,13 @@ import java.awt.*;
 public class ToDoList extends Base{
 
     JPanel notes;
-    @Override
-    protected void montarCabecalho() {
-        JButton back = new JButton("Projetos de Livros");
-        back.addActionListener(e_->{
-            trocada(new Collections());
-        });
-        cabecalho.add(back);
-        JLabel titulo = new JLabel("Lista de Anotações");
-        cabecalho.add(titulo);
-        JButton plus = new JButton("Config");
-        cabecalho.add(plus);
+    public ToDoList(){
+        montarCabecalho("Coleção de Livros","Lista de Anotações");
+        montarConteudo();
+        montarRodape();
+    }
+    protected void changetela() {
+        trocada(new Collections()); // padrão, pode sobrescrever
     }
 
     @Override
