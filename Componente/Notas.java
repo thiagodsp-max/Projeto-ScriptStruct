@@ -1,4 +1,4 @@
-package Beta;
+package Componente;
 
 //Baseado no Conceito de Anotações
 
