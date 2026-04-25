@@ -1,5 +1,5 @@
-package Struct;
-import Beta.Projeto;
+package Estrutura;
+import Componente.Projeto;
 
 import javax.swing.*;
 import java.awt.*;
