@@ -1,48 +1,43 @@
 package Struct;
 
-import Beta.Projeto;
 import Beta.Arquivo;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class TextEditor extends Base{
     //Atributos importantes
     JTextArea textArea;
-    JTextField titulo;
+    //JTextField titulo;
     JScrollPane scrollPane;
     JSpinner fontsize;
     JComboBox fontype;
     Arquivo txt;
+
+    private Base previous;
+    BookOrder sumario;
     //Janela orientada para permitir a Escrita do usuário
 
-    public TextEditor(Arquivo txt){
+    public TextEditor(Arquivo txt, BookOrder antes){
         this.txt=txt;
+        this.sumario=antes;
+        montarCabecalho("Voltar",txt.getTitle());
+        montarConteudo();
+        montarRodape();
     }
 
     @Override
-    protected void montarCabecalho() {
-        JButton back = new JButton("Voltar");
-        back.addActionListener(e_->{
-            System.out.println("Voltando para a categoria");
-            trocada(new BookOrder());
-        });
-
-        cabecalho.add(back);
-        //titulo = new JTextField(txt.getTitle(),15);
-        titulo = new JTextField("Titulo",15);
-        cabecalho.add(titulo);
-        JButton plus = new JButton("Config");
-        cabecalho.add(plus);
+    protected void changetela() {
+        trocada(sumario);
     }
 
     @Override
     protected void montarConteudo() {
         conteudo.setLayout(new BorderLayout());
         textArea = new JTextArea();
+        textArea.setOpaque(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         if(txt != null){
