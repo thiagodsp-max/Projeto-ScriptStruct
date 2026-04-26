@@ -8,7 +8,7 @@ public abstract class Base extends JPanel {
     protected JPanel cabecalho;
     protected JPanel conteudo;
     protected JPanel rodape;
-    JTextField titulo;
+    JLabel titulo;
 
     //Classe Abstrata que serve de Base para as Subclasses na Package
     protected Base() {
@@ -30,7 +30,8 @@ public abstract class Base extends JPanel {
         back.addActionListener(e_ -> changetela());
         cabecalho.add(back);
         //Nome da Tela Atual
-        titulo = new JTextField(title);
+        titulo = new JLabel(title);
+        //titulo.setEditable(false);
         cabecalho.add(titulo);
         //Configuração de Formatação
         JPopupMenu menu = new JPopupMenu();

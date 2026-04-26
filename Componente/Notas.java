@@ -21,6 +21,9 @@ public class Notas {
     public String getName(){
         return nome;
     }
+    public void setName(String name){
+        nome=name;
+    }
     public String getDetails(){
         return descricao;
     }
@@ -39,5 +42,16 @@ public class Notas {
         else {
             feito = true;
         }
+    }
+
+    public String formato(){
+        return nome+"|"+descricao+"|"+feito;
+    }
+    public static Notas linhas(String linha){
+        String[] parte=linha.split("\\|");
+        Notas no=new Notas(parte[0]);
+        if(parte.length>1)no.setDetails(parte[1]);
+        if(parte.length>2 && parte[2].equals("true"))no.setstatus();
+        return no;
     }
 }

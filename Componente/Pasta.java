@@ -6,19 +6,19 @@ import java.util.List;
 public class Pasta {
     //Depende que já se tenha criado a classe de Texto
     //Equivalente à Pasta
-    String nome;
-    List<Arquivo> arquivos;
+    static String nome;
+    static List<Arquivo> arquivos;
 
     public Pasta(String name){
         this.nome=name;
         this.arquivos=new ArrayList<>();
     }
 
-    public String getNome(){
+    public static String getNome(){
         return nome;
     }
 
-    public List<Arquivo> getTextos(){
+    public static List<Arquivo> getTextos(){
         return arquivos;
     }
 

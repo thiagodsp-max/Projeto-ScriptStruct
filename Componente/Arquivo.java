@@ -4,6 +4,7 @@ public class Arquivo {
     //São os arquivos de Texto, aqui iremos definir que eles recebem
     String title;
     String story;
+    String caminho;
 
     //Criando um Novo Arquivo
     public Arquivo(String nome, String letra){
@@ -25,5 +26,12 @@ public class Arquivo {
 
     public void setStory(String letra){
         this.story=letra;
+    }
+
+    public String getCaminho(){
+        return caminho;
+    }
+    public void setCaminho(String path){
+        this.caminho=path;
     }
 }

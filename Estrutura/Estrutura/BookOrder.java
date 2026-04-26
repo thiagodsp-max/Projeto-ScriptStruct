@@ -3,18 +3,21 @@ package Estrutura;
 import Componente.Pasta;
 import Componente.Projeto;
 import Componente.Arquivo;
-
+import Controle.Files;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class BookOrder extends Base{
-    JTextField titulo;
+    Projeto biblios;
     JPanel listaPasta;
     //Janela que mostra as Categorias e Arquivos de um Livro
     public BookOrder(Projeto book){
+        this.biblios=book;
         montarCabecalho("Voltar",book.getName());
         montarConteudo();
         montarRodape();
+        loadpasta();
     }
     protected void changetela() {
         trocada(new Collections()); // padrão, pode sobrescrever
@@ -26,12 +29,14 @@ public class BookOrder extends Base{
         listaPasta.setLayout(new BoxLayout(listaPasta,BoxLayout.Y_AXIS));
         JScrollPane scroll= new JScrollPane(listaPasta);
         conteudo.add(scroll,BorderLayout.CENTER);
+    }
 
-        addPasta(new Pasta("Categoria Padrão"));
-        /*for(Pasta y : libro.getSecao()){
-            addPasta(y);
-        }*/
-
+    private void loadpasta(){
+        java.util.List<String> nomes= Files.listaPasta(biblios.getName());
+        for(String name: nomes){
+            Pasta pst = new Pasta(name);
+            addPasta(pst);
+        }
     }
 
     @Override
@@ -45,9 +50,10 @@ public class BookOrder extends Base{
         pasta.addActionListener(e->{
             String nome=JOptionPane.showInputDialog("Nome da Categoria");
             if(nome != null && !nome.isEmpty()){
+                String caminho=biblios.getName()+"/"+nome;
+                Files.criarPasta(caminho);
                 Pasta pst=new Pasta(nome);
                 addPasta(pst);
-                //book.addSecao(pst);
             }
         });
     }
@@ -57,13 +63,17 @@ public class BookOrder extends Base{
         pastapainel.setLayout(new BorderLayout());
         pastapainel.setBorder(BorderFactory.createTitledBorder(Pasta.getNome()));
         JPanel capitulos= new JPanel();
-        capitulos.setLayout(new BoxLayout(capitulos, BoxLayout.Y_AXIS));
+        capitulos.setLayout(new BoxLayout(capitulos, BoxLayout.X_AXIS));
         JButton addTexto= new JButton("+ Capitulo");
         addTexto.addActionListener(e -> {
             String nome=JOptionPane.showInputDialog("Nome do Texto:");
 
             if(nome != null && !nome.isEmpty()){
+                String caminho=biblios.getName()+"/"+Pasta.getNome()+"/"+nome+".txt";
+                Files.salvarArquivo(caminho,"");
+
                 Arquivo novo=new Arquivo(nome,"");
+                novo.setCaminho(caminho);
                 Pasta.addTexto(novo);
                 JButton botao=criarBotao(novo);
                 capitulos.add(botao);
@@ -72,8 +82,12 @@ public class BookOrder extends Base{
             }
         });
         capitulos.add(addTexto);
-        for (Arquivo x: Pasta.getTextos()){
-            capitulos.add(criarBotao(x));
+        List<String> arquivos = Files.listaArquivo(biblios.getName()+"/"+Pasta.getNome());
+        for(String name : arquivos){
+            String clean=name.replace(".txt","");
+            Arquivo ark = new Arquivo(clean,"");
+            ark.setCaminho(biblios.getName()+"/"+Pasta.getNome()+"/"+name);
+            capitulos.add(criarBotao(ark));
         }
         pastapainel.add(capitulos, BorderLayout.CENTER);
         listaPasta.add(pastapainel);

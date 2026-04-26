@@ -1,4 +1,4 @@
-//O objetivo é implementar a classe main, criando telas/janelas de acordo com nossa necessidade
+package Estrutura;//O objetivo é implementar a classe main, criando telas/janelas de acordo com nossa necessidade
 
 import javax.swing.*;
 // Janela principal que implementará as subclasses de Àrea/Janela

@@ -1,6 +1,7 @@
 package Estrutura;
 
 import Componente.Arquivo;
+import Controle.Files;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -10,7 +11,6 @@ import java.awt.*;
 public class TextEditor extends Base{
     //Atributos importantes
     JTextArea textArea;
-    //JTextField titulo;
     JScrollPane scrollPane;
     JSpinner fontsize;
     JComboBox fontype;
@@ -41,7 +41,13 @@ public class TextEditor extends Base{
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         if(txt != null){
-            textArea.setText(txt.getStory());
+            //textArea.setText(txt.getStory());
+            if(txt.getCaminho() != null){
+                String content=Files.leitura(txt.getCaminho());
+                textArea.setText(content);
+            }else{
+                textArea.setText(txt.getStory());
+            }
         }
         textArea.setFont(new Font("Arial",Font.PLAIN,20));
         scrollPane = new JScrollPane(textArea);
@@ -71,10 +77,10 @@ public class TextEditor extends Base{
         JPopupMenu menu = new JPopupMenu();
         JMenuItem salve=new JMenuItem("Salvar");
         JMenuItem abre=new JMenuItem("Abrir");
-        JMenuItem sai=new JMenuItem("Sair");
+        JMenuItem tag=new JMenuItem("Renomear");
         menu.add(salve);
         menu.add(abre);
-        menu.add(sai);
+        menu.add(tag);
         JButton opt=new JButton("Arquivo");
 
         opt.addActionListener(e -> {
@@ -82,14 +88,34 @@ public class TextEditor extends Base{
         });
 
         salve.addActionListener(e-> {
-            Arquivo doc=getDoc();
+            //Arquivo doc=getDoc();
             txt.setStory(textArea.getText());
             txt.setTitle(titulo.getText());
-            System.out.println("Sua narrativa foi salva!!");
-            System.out.println("Título:" + txt.getTitle());
-            System.out.println("História:" + txt.getStory());
-        });
 
+            if(txt.getCaminho() != null){
+                //Files.salvarArquivo(txt.getCaminho(),txt.getStory());
+                Files.salvarArquivo(txt.getCaminho(),textArea.getText());
+            }
+            //Files.salvarArquivo(txt.getCaminho(),txt.getStory());
+            System.out.println("Sua narrativa foi salva em: "+txt.getCaminho());
+            //System.out.println("Título:" + txt.getTitle());
+            //System.out.println("História:" + txt.getStory());
+        });
+        abre.addActionListener(e->{
+            JFileChooser seletor=new JFileChooser();
+            int result=seletor.showOpenDialog(this);
+
+            if(result == JFileChooser.APPROVE_OPTION){
+                java.io.File file = seletor.getSelectedFile();
+                String content=Files.leitura(file.getPath());
+                textArea.setText(content);
+                txt.setCaminho(file.getPath());
+                txt.setTitle(file.getName());
+                titulo.setText(file.getName());
+                System.out.println("O arquivo "+file.getPath()+" foi carregado!!");
+            }
+        });
+        //tag.addActionListener();
         rodape.add(fontype);
         rodape.add(fontsize);
         rodape.add(opt);
