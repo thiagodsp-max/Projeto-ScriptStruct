@@ -160,6 +160,7 @@ public class TextEditor extends Base{
         });
         JButton bold = new JButton("B");
         JButton italic = new JButton("I");
+        JButton under = new JButton("U");
         bold.addActionListener(e -> {
             StyledDocument doc = textArea.getStyledDocument();
             int start = textArea.getSelectionStart();
@@ -183,19 +184,51 @@ public class TextEditor extends Base{
                 doc.setCharacterAttributes(start, end - start, style, false);
             }
         });
+        under.addActionListener(e -> {
+            StyledDocument doc = textArea.getStyledDocument();
+            int start = textArea.getSelectionStart();
+            int end = textArea.getSelectionEnd();
+
+            if (start != end) {
+                Style style = textArea.addStyle("Underline", null);
+                StyleConstants.setUnderline(style, true);
+                doc.setCharacterAttributes(start, end - start, style, false);
+            }
+        });
+        //Alinhamento
+        JPopupMenu linha = new JPopupMenu();
+        JMenuItem center=new JMenuItem("Centro");
+        JMenuItem left=new JMenuItem("Esquerda");
+        JMenuItem right=new JMenuItem("Direita");
+        linha.add(right);
+        linha.add(center);
+        linha.add(left);
+        JButton lin=new JButton("Alinhar");
+        lin.addActionListener(e -> {
+            linha.show(lin,0,lin.getHeight());
+        });
+        left.addActionListener(e -> alinhar(StyleConstants.ALIGN_LEFT));
+        center.addActionListener(e -> alinhar(StyleConstants.ALIGN_CENTER));
+        right.addActionListener(e -> alinhar(StyleConstants.ALIGN_RIGHT));
         rodape.add(fontype);
         rodape.add(fontsize);
         rodape.add(opt);
         rodape.add(bold);
         rodape.add(italic);
+        rodape.add(under);
+        rodape.add(lin);
         status = new JLabel("Palavras: 0");
         rodape.add(status);
     }
 
-    public Arquivo getDoc(){
-        String big=titulo.getText();
-        String sma=textArea.getText();
-        return new Arquivo(big,sma);
-    }
+    private void alinhar(int alinhamento) {
+        StyledDocument doc = textArea.getStyledDocument();
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        StyleConstants.setAlignment(attr, alinhamento);
 
+        int start = textArea.getSelectionStart();
+        int end = textArea.getSelectionEnd();
+
+        doc.setParagraphAttributes(start, end - start, attr, false);
+    }
 }
