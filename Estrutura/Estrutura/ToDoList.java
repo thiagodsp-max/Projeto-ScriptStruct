@@ -61,7 +61,7 @@ public class ToDoList extends Base{
 
         JButton edit= new JButton("Editar");
         edit.addActionListener(e->{
-            String detail=JOptionPane.showInputDialog("Descreva a tarefa em questão");
+            String detail=JOptionPane.showInputDialog("Descreva a tarefa em questão",ideia.getDetails());
             if(detail != null){
                 ideia.setDetails(detail);
                 Files.saveNota(listas);
@@ -76,7 +76,7 @@ public class ToDoList extends Base{
         });
         JButton rename = new JButton("F12");
         rename.addActionListener(e->{
-            String nova=JOptionPane.showInputDialog("Novo Nome:");
+            String nova=JOptionPane.showInputDialog("Novo Nome:",ideia.getName());
             if(nova!=null&&!nova.isEmpty()){
                 ideia.setName(nova);
                 task.setText(nova);

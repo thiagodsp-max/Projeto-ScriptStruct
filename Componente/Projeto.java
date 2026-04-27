@@ -28,4 +28,8 @@ public class Projeto {
     public void addSecao(Pasta v){
         secao.add(v);
     }
+
+    public void setName(String nova) {
+        name=nova;
+    }
 }

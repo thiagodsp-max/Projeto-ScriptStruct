@@ -6,6 +6,7 @@ import Componente.Arquivo;
 import Controle.Files;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 public class BookOrder extends Base{
@@ -46,7 +47,6 @@ public class BookOrder extends Base{
         //JButton arquivo= new JButton("Novo Arquivo");
         rodape.add(pasta);
         //rodape.add(arquivo);
-
         pasta.addActionListener(e->{
             String nome=JOptionPane.showInputDialog("Nome da Categoria");
             if(nome != null && !nome.isEmpty()){
@@ -57,51 +57,134 @@ public class BookOrder extends Base{
             }
         });
     }
+    public void addPasta(Pasta pasta){
+        JPanel bloco = new JPanel();
+        bloco.setLayout(new BorderLayout());
+        JPanel header = new JPanel(new BorderLayout());
+        JPanel action = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JLabel nome = new JLabel(pasta.getNome());
+        JButton rename = new JButton("F12");
+        rename.addActionListener(e -> {
+            String nova = JOptionPane.showInputDialog("Novo Nome:", pasta.getNome());
+            if(nova != null && !nova.isEmpty()){
+                String oldPath = biblios.getName() + "/" + pasta.getNome();
+                String newPath = biblios.getName() + "/" + nova;
 
-    public void addPasta(Pasta Pasta){
-        JPanel pastapainel = new JPanel();
-        pastapainel.setLayout(new BorderLayout());
-        pastapainel.setBorder(BorderFactory.createTitledBorder(Pasta.getNome()));
-        JPanel capitulos= new JPanel();
-        capitulos.setLayout(new BoxLayout(capitulos, BoxLayout.X_AXIS));
-        JButton addTexto= new JButton("+ Capitulo");
-        addTexto.addActionListener(e -> {
-            String nome=JOptionPane.showInputDialog("Nome do Texto:");
+                Files.renomear(oldPath, newPath);
 
-            if(nome != null && !nome.isEmpty()){
-                String caminho=biblios.getName()+"/"+Pasta.getNome()+"/"+nome+".txt";
-                Files.salvarArquivo(caminho,"");
-
-                Arquivo novo=new Arquivo(nome,"");
-                novo.setCaminho(caminho);
-                Pasta.addTexto(novo);
-                JButton botao=criarBotao(novo);
-                capitulos.add(botao);
-                capitulos.revalidate();
-                capitulos.repaint();
+                pasta.setNome(nova);
+                nome.setText(nova);
             }
         });
-        capitulos.add(addTexto);
-        List<String> arquivos = Files.listaArquivo(biblios.getName()+"/"+Pasta.getNome());
+        rename.setMargin(new Insets(2,5,2,5));
+
+        JButton remove = new JButton("Deletar");
+        remove.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(null, "Excluir pasta?");
+            if(confirm == JOptionPane.YES_OPTION){
+                File pst =new File(Files.BASE_PATH + biblios.getName()+"/"+pasta.getNome());
+                deletaPasta(pst);
+                listaPasta.remove(bloco);
+                listaPasta.revalidate();
+                listaPasta.repaint();
+            }
+        });
+        remove.setMargin(new Insets(2,5,2,5));
+        JPanel capitulos = new JPanel();
+
+        JButton addTexto = new JButton("+ Capítulo");
+        addTexto.addActionListener(e -> {
+            String nomeCap = JOptionPane.showInputDialog("Nome do Texto:");
+            if(nomeCap != null && !nomeCap.isEmpty()){
+                String caminho = biblios.getName()+"/"+pasta.getNome()+"/"+nomeCap+".txt";
+                Files.salvarArquivo(caminho,"");
+
+                Arquivo novo = new Arquivo(nomeCap,"");
+                novo.setCaminho(caminho);
+
+                capitulos.add(criarBotao(novo));
+                capitulos.revalidate();
+            }
+        });
+        bloco.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        header.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+        action.add(addTexto);
+        action.add(rename);
+        action.add(remove);
+        header.add(nome,BorderLayout.WEST);
+        header.add(action, BorderLayout.EAST);
+        // 🔹 Lista de capítulos
+        capitulos.setLayout(new BoxLayout(capitulos, BoxLayout.Y_AXIS));
+
+        List<String> arquivos = Files.listaArquivo(biblios.getName()+"/"+pasta.getNome());
         for(String name : arquivos){
-            String clean=name.replace(".txt","");
+            String clean = name.replace(".txt","");
             Arquivo ark = new Arquivo(clean,"");
-            ark.setCaminho(biblios.getName()+"/"+Pasta.getNome()+"/"+name);
+            ark.setCaminho(biblios.getName()+"/"+pasta.getNome()+"/"+name);
+
             capitulos.add(criarBotao(ark));
         }
-        pastapainel.add(capitulos, BorderLayout.CENTER);
-        listaPasta.add(pastapainel);
+
+        bloco.add(header, BorderLayout.NORTH);
+        bloco.add(capitulos, BorderLayout.CENTER);
+
+        listaPasta.add(bloco);
         listaPasta.revalidate();
     }
-
-    private JButton criarBotao(Arquivo archive){
-        JButton bt= new JButton(archive.getTitle());
-        bt.addActionListener(e -> {
-            System.out.println("O seguinte arquivo foi aberto:"+archive.getTitle());
+    private JPanel criarBotao(Arquivo archive){
+        JPanel linha = new JPanel(new BorderLayout());
+        linha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        linha.setPreferredSize(new Dimension(0, 40));
+        linha.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        JButton abrir = new JButton(archive.getTitle());
+        abrir.addActionListener(e -> {
             TextEditor chapter = new TextEditor(archive,this);
-            //chapter.setDoc
             trocada(chapter);
         });
-        return bt;
+
+        JPanel act = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton rename = new JButton("F12");
+        rename.addActionListener(e->{
+            String nova = JOptionPane.showInputDialog("Novo titulo", archive.getTitle());
+            if(nova != null && !nova.isEmpty()){
+                String old = archive.getCaminho();
+                String pst = old.substring(0, old.lastIndexOf("/"));
+                String path = pst + "/" + nova + ".txt";
+
+                Files.renomear(old, path);
+
+                archive.setCaminho(path);
+                archive.setTitle(nova);
+                abrir.setText(nova);
+            }
+        });
+
+        JButton delete = new JButton("Deletar");
+        delete.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(null, "Excluir arquivo?");
+            if(confirm == JOptionPane.YES_OPTION){
+                new java.io.File("repositorio/" + archive.getCaminho()).delete();
+                linha.getParent().remove(linha);
+                linha.getParent().revalidate();
+                linha.getParent().repaint();
+            }
+        });
+
+        act.add(rename);
+        act.add(delete);
+
+        linha.add(abrir, BorderLayout.CENTER);
+        linha.add(act, BorderLayout.EAST);
+
+        return linha;
+    }
+    private void deletaPasta(File dir){
+        if(dir.isDirectory()){
+            for(File f:dir.listFiles()){
+                deletaPasta(f);
+            }
+        }
+        dir.delete();
     }
 }

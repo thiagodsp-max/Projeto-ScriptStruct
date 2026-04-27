@@ -60,6 +60,7 @@ public abstract class Base extends JPanel {
         menu.add(fundo);
         menu.add(letra);
         cabecalho.add(plus);
+
     }
 
     protected abstract void montarConteudo();

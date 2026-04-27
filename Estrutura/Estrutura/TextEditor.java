@@ -6,6 +6,9 @@ import Controle.Files;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.*;
 
 public class TextEditor extends Base{
@@ -15,9 +18,10 @@ public class TextEditor extends Base{
     JSpinner fontsize;
     JComboBox fontype;
     Arquivo txt;
-
-    private Base previous;
     BookOrder sumario;
+    boolean alterado = false;
+    JLabel status = new JLabel("Palavras: 0");
+
     //Janela orientada para permitir a Escrita do usuário
 
     public TextEditor(Arquivo txt, BookOrder antes){
@@ -40,6 +44,36 @@ public class TextEditor extends Base{
         textArea.setOpaque(true);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
+
+        Document doc = textArea.getDocument();
+
+        doc.addDocumentListener(new DocumentListener() {
+
+            private void atualizarTudo() {
+                alterado = true;
+
+                String texto = textArea.getText().trim();
+                int palavras = texto.isEmpty() ? 0 : texto.split("\\s+").length;
+
+                status.setText("Palavras: " + palavras);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                atualizarTudo();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                atualizarTudo();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                atualizarTudo();
+            }
+        });
+
         if(txt != null){
             //textArea.setText(txt.getStory());
             if(txt.getCaminho() != null){
@@ -77,10 +111,8 @@ public class TextEditor extends Base{
         JPopupMenu menu = new JPopupMenu();
         JMenuItem salve=new JMenuItem("Salvar");
         JMenuItem abre=new JMenuItem("Abrir");
-        JMenuItem tag=new JMenuItem("Renomear");
         menu.add(salve);
         menu.add(abre);
-        menu.add(tag);
         JButton opt=new JButton("Arquivo");
 
         opt.addActionListener(e -> {
@@ -115,10 +147,11 @@ public class TextEditor extends Base{
                 System.out.println("O arquivo "+file.getPath()+" foi carregado!!");
             }
         });
-        //tag.addActionListener();
         rodape.add(fontype);
         rodape.add(fontsize);
         rodape.add(opt);
+        status = new JLabel("Palavras: 0");
+        rodape.add(status);
     }
 
     public Arquivo getDoc(){

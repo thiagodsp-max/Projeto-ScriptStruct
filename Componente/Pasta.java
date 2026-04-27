@@ -18,6 +18,10 @@ public class Pasta {
         return nome;
     }
 
+    public static void setNome(String title){
+        nome=title;
+    }
+
     public static List<Arquivo> getTextos(){
         return arquivos;
     }

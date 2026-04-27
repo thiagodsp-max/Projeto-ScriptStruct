@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Files {
-    static final String BASE_PATH="repositorio/";
+    public static final String BASE_PATH="repositorio/";
     public static void criarPasta(String destino){
         File pasta = new File(BASE_PATH+destino);
         if(!pasta.exists()){
@@ -89,5 +89,14 @@ public class Files {
             e.printStackTrace();
         }
         return tasks;
+    }
+
+    public static void renomear(String antigo, String novo){
+        File f = new File(BASE_PATH + antigo);
+        File n = new File(BASE_PATH + novo);
+
+        if(f.exists()){
+            f.renameTo(n);
+        }
     }
 }
