@@ -8,12 +8,14 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
+import javax.swing.text.*;
+import javax.swing.text.rtf.RTFEditorKit;
 import java.awt.*;
+import java.io.*;
 
 public class TextEditor extends Base{
     //Atributos importantes
-    JTextArea textArea;
+    JTextPane textArea;
     JScrollPane scrollPane;
     JSpinner fontsize;
     JComboBox fontype;
@@ -40,13 +42,10 @@ public class TextEditor extends Base{
     @Override
     protected void montarConteudo() {
         conteudo.setLayout(new BorderLayout());
-        textArea = new JTextArea();
+        textArea = new JTextPane();
         textArea.setOpaque(true);
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
 
         Document doc = textArea.getDocument();
-
         doc.addDocumentListener(new DocumentListener() {
 
             private void atualizarTudo() {
@@ -74,14 +73,17 @@ public class TextEditor extends Base{
             }
         });
 
-        if(txt != null){
-            //textArea.setText(txt.getStory());
-            if(txt.getCaminho() != null){
-                String content=Files.leitura(txt.getCaminho());
-                textArea.setText(content);
-            }else{
-                textArea.setText(txt.getStory());
+        if(txt != null && txt.getCaminho() !=null){
+            try{
+                FileInputStream input = new FileInputStream(Files.BASE_PATH+txt.getCaminho());
+                RTFEditorKit kit= new RTFEditorKit();
+                kit.read(input, textArea.getDocument(), 0);
+                input.close();
+            } catch (RuntimeException | IOException | BadLocationException e) {
+                e.printStackTrace();
             }
+        } else if(txt !=null){
+            textArea.setText(txt.getStory());
         }
         textArea.setFont(new Font("Arial",Font.PLAIN,20));
         scrollPane = new JScrollPane(textArea);
@@ -120,36 +122,72 @@ public class TextEditor extends Base{
         });
 
         salve.addActionListener(e-> {
-            //Arquivo doc=getDoc();
-            txt.setStory(textArea.getText());
-            txt.setTitle(titulo.getText());
-
-            if(txt.getCaminho() != null){
-                //Files.salvarArquivo(txt.getCaminho(),txt.getStory());
-                Files.salvarArquivo(txt.getCaminho(),textArea.getText());
+            try{
+                txt.setTitle(titulo.getText());
+                if(txt.getCaminho() != null){
+                    FileOutputStream output= new FileOutputStream(Files.BASE_PATH+txt.getCaminho());
+                    RTFEditorKit kit=new RTFEditorKit();
+                    kit.write(output,textArea.getDocument(),0,textArea.getDocument().getLength());
+                    output.close();
+                }
+                System.out.println("Sua narrativa foi salva em:"+txt.getCaminho());
+            }catch (Exception ex){
+                ex.printStackTrace();
             }
-            //Files.salvarArquivo(txt.getCaminho(),txt.getStory());
-            System.out.println("Sua narrativa foi salva em: "+txt.getCaminho());
-            //System.out.println("Título:" + txt.getTitle());
-            //System.out.println("História:" + txt.getStory());
         });
+
         abre.addActionListener(e->{
             JFileChooser seletor=new JFileChooser();
             int result=seletor.showOpenDialog(this);
 
             if(result == JFileChooser.APPROVE_OPTION){
-                java.io.File file = seletor.getSelectedFile();
-                String content=Files.leitura(file.getPath());
-                textArea.setText(content);
-                txt.setCaminho(file.getPath());
-                txt.setTitle(file.getName());
-                titulo.setText(file.getName());
-                System.out.println("O arquivo "+file.getPath()+" foi carregado!!");
+                try{
+                    File file = seletor.getSelectedFile();
+
+                    FileInputStream input=new FileInputStream(file);
+                    RTFEditorKit kit = new RTFEditorKit();
+                    kit.read(input,textArea.getDocument(),0);
+                    input.close();
+                    txt.setCaminho(file.getPath());
+                    //txt.setCaminho(file.getName());
+                    txt.setTitle(file.getName());
+                    titulo.setText(file.getName());
+                    System.out.println("Arquivo formatado carregado!!");
+                } catch(Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
+        JButton bold = new JButton("B");
+        JButton italic = new JButton("I");
+        bold.addActionListener(e -> {
+            StyledDocument doc = textArea.getStyledDocument();
+            int start = textArea.getSelectionStart();
+            int end = textArea.getSelectionEnd();
+
+            if (start != end) {
+                Style style = textArea.addStyle("Bold", null);
+                StyleConstants.setBold(style, true);
+                doc.setCharacterAttributes(start, end - start, style, false);
+            }
+        });
+
+        italic.addActionListener(e -> {
+            StyledDocument doc = textArea.getStyledDocument();
+            int start = textArea.getSelectionStart();
+            int end = textArea.getSelectionEnd();
+
+            if (start != end) {
+                Style style = textArea.addStyle("Italic", null);
+                StyleConstants.setItalic(style, true);
+                doc.setCharacterAttributes(start, end - start, style, false);
             }
         });
         rodape.add(fontype);
         rodape.add(fontsize);
         rodape.add(opt);
+        rodape.add(bold);
+        rodape.add(italic);
         status = new JLabel("Palavras: 0");
         rodape.add(status);
     }

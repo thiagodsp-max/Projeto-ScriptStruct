@@ -22,7 +22,7 @@ public class BookOrder extends Base{
         loadpasta();
     }
     protected void changetela() {
-        trocada(new Collections()); // padrão, pode sobrescrever
+        trocada(new Collections());
     }
     @Override
     protected void montarConteudo() {
@@ -43,19 +43,15 @@ public class BookOrder extends Base{
 
     @Override
     protected void montarRodape() {
-        //Botão para criar nova categoria ou novo arquivo
+        //Botão para criar nova categoria
         JButton pasta = new JButton("Nova Pasta");
-        //JButton arquivo= new JButton("Novo Arquivo");
         rodape.add(pasta);
-        //rodape.add(arquivo);
         pasta.addActionListener(e->{
             String nome=JOptionPane.showInputDialog("Nome da Categoria");
             if(nome != null && !nome.isEmpty()){
                 String caminho = biblios.getName() + "/" + nome;
-                String fullPath = Files.BASE_PATH + caminho;
-
-                JOptionPane.showMessageDialog(this,
-                        "Criando pasta em:\n" + fullPath);
+                //String fullPath = Files.BASE_PATH + caminho;
+                //JOptionPane.showMessageDialog(this,"Criando pasta em:\n" + fullPath);
 
                 Files.criarPasta(caminho);
                 Pasta pst=new Pasta(nome);
@@ -127,19 +123,16 @@ public class BookOrder extends Base{
         header.add(action, BorderLayout.EAST);
         // 🔹 Lista de capítulos
         capitulos.setLayout(new BoxLayout(capitulos, BoxLayout.Y_AXIS));
-
         List<String> arquivos = Files.listaArquivo(biblios.getName()+"/"+pasta.getNome());
         for(String name : arquivos){
             String clean = name.replace(".txt","");
             Arquivo ark = new Arquivo(clean,"");
             ark.setCaminho(biblios.getName()+"/"+pasta.getNome()+"/"+name);
-
             capitulos.add(criarBotao(ark));
         }
 
         bloco.add(header, BorderLayout.NORTH);
         bloco.add(capitulos, BorderLayout.CENTER);
-
         listaPasta.add(bloco);
         listaPasta.revalidate();
     }
@@ -157,7 +150,6 @@ public class BookOrder extends Base{
         });
 
         JPanel act = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
         JButton rename = new JButton("F12");
         rename.addActionListener(e->{
             String nova = JOptionPane.showInputDialog("Novo titulo", archive.getTitle());
@@ -179,8 +171,7 @@ public class BookOrder extends Base{
             int confirm = JOptionPane.showConfirmDialog(null, "Excluir arquivo?");
             if(confirm == JOptionPane.YES_OPTION){
                 File f = new File(Files.BASE_PATH + archive.getCaminho());
-                JOptionPane.showMessageDialog(this,
-                        "Deletando arquivo:\n" + f.getAbsolutePath());
+                //JOptionPane.showMessageDialog(this,"Deletando arquivo:\n" + f.getAbsolutePath());
                 f.delete();
                 linha.getParent().remove(linha);
                 linha.getParent().revalidate();

@@ -8,7 +8,6 @@ public class App extends JFrame {
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // centraliza na tela
-
         // Aqui definimos qual das nossas telas vai ser a inicial
         setContentPane(new Collections());
         setVisible(true);
