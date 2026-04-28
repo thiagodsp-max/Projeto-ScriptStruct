@@ -52,7 +52,6 @@ public class BookOrder extends Base{
                 String caminho = biblios.getName() + "/" + nome;
                 //String fullPath = Files.BASE_PATH + caminho;
                 //JOptionPane.showMessageDialog(this,"Criando pasta em:\n" + fullPath);
-
                 Files.criarPasta(caminho);
                 Pasta pst=new Pasta(nome);
                 addPasta(pst);
@@ -103,11 +102,32 @@ public class BookOrder extends Base{
             String nomeCap = JOptionPane.showInputDialog("Nome do Texto:");
             if(nomeCap != null && !nomeCap.isEmpty()){
                 String caminho = biblios.getName()+"/"+nomePastaAtual+"/"+nomeCap+".txt";
+                String[] opcoes = {"Livre", "Personagem", "Ambiente"};
+
+                String tipo = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Escolha o tipo de arquivo:",
+                        "Tipo",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcoes,
+                        opcoes[0]
+                );
+                String content;
+                if ("Personagem".equals(tipo)) {
+                    content = modelopersonagem();
+                }
+                else if ("Ambiente".equals(tipo)) {
+                    content = modeloambiente();
+                }
+                else {
+                    content = "";
+                }
                 //String fullPath = Files.BASE_PATH + caminho;
                // JOptionPane.showMessageDialog(this,"Criando arquivo em:\n" + fullPath);
-                Files.salvarArquivo(caminho,"");
+                Files.salvarArquivo(caminho, content);
 
-                Arquivo novo = new Arquivo(nomeCap,"");
+                Arquivo novo = new Arquivo(nomeCap, content);
                 novo.setCaminho(caminho);
 
                 capitulos.add(criarBotao(novo));
@@ -181,10 +201,8 @@ public class BookOrder extends Base{
 
         act.add(rename);
         act.add(delete);
-
         linha.add(abrir, BorderLayout.CENTER);
         linha.add(act, BorderLayout.EAST);
-
         return linha;
     }
     private void deletaPasta(File dir){
@@ -194,5 +212,35 @@ public class BookOrder extends Base{
             }
         }
         dir.delete();
+    }
+    private String modelopersonagem(){
+        return """
+    Nome:
+    Idade:
+    Aparência:
+
+    Personalidade:
+
+    História:
+
+    Motivação:
+
+    Relacionamentos:
+    """;
+    }
+    private String modeloambiente(){
+        return """
+    Nome do Local:
+
+    Descrição:
+
+    Clima:
+
+    História:
+
+    Importância:
+
+    Detalhes:
+    """;
     }
 }

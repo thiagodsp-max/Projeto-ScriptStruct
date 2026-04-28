@@ -83,10 +83,27 @@ public class ToDoList extends Base{
                 Files.saveNota(listas);
             }
         });
+        JButton delete = new JButton("Deletar");
+        delete.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Deseja excluir esta anotação?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                listas.remove(ideia);          // remove da lista
+                notes.remove(noteline);        // remove da UI
+                notes.revalidate();
+                notes.repaint();
+                Files.saveNota(listas);        // atualiza arquivo
+            }
+        });
         noteline.add(task);
         noteline.add(edit);
         noteline.add(see);
         noteline.add(rename);
+        noteline.add(delete);
         notes.add(noteline);
         notes.revalidate();
     }

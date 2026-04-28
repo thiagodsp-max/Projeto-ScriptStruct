@@ -73,17 +73,30 @@ public class TextEditor extends Base{
             }
         });
 
-        if(txt != null && txt.getCaminho() !=null){
-            try{
-                FileInputStream input = new FileInputStream(Files.BASE_PATH+txt.getCaminho());
-                RTFEditorKit kit= new RTFEditorKit();
-                kit.read(input, textArea.getDocument(), 0);
+        if (txt != null && txt.getCaminho() != null) {
+            try {
+                File file = new File(Files.BASE_PATH + txt.getCaminho());
+
+                BufferedReader reader = new BufferedReader(new FileReader(file));
+                String primeiraLinha = reader.readLine();
+                reader.close();
+
+                FileInputStream input = new FileInputStream(file);
+
+                if (primeiraLinha != null && primeiraLinha.startsWith("{\\rtf")) {
+                    // 📄 É RTF
+                    RTFEditorKit kit = new RTFEditorKit();
+                    kit.read(input, textArea.getDocument(), 0);
+                } else {
+                    // 📝 É texto simples
+                    String content = Files.leitura(txt.getCaminho());
+                    textArea.setText(content);
+                }
                 input.close();
-            } catch (RuntimeException | IOException | BadLocationException e) {
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if(txt !=null){
-            textArea.setText(txt.getStory());
         }
         textArea.setFont(new Font("Arial",Font.PLAIN,20));
         scrollPane = new JScrollPane(textArea);
@@ -110,18 +123,9 @@ public class TextEditor extends Base{
             textArea.setFont(new Font(selected,atual.getStyle(),atual.getSize()));
         });
         fontype.setSelectedItem("Arial");
-        JPopupMenu menu = new JPopupMenu();
-        JMenuItem salve=new JMenuItem("Salvar");
-        JMenuItem abre=new JMenuItem("Abrir");
-        menu.add(salve);
-        menu.add(abre);
-        JButton opt=new JButton("Arquivo");
 
-        opt.addActionListener(e -> {
-            menu.show(opt,0,opt.getHeight());
-        });
-
-        salve.addActionListener(e-> {
+        JButton opt=new JButton("Salvar");
+        opt.addActionListener(e-> {
             try{
                 txt.setTitle(titulo.getText());
                 if(txt.getCaminho() != null){
@@ -136,28 +140,6 @@ public class TextEditor extends Base{
             }
         });
 
-        abre.addActionListener(e->{
-            JFileChooser seletor=new JFileChooser();
-            int result=seletor.showOpenDialog(this);
-
-            if(result == JFileChooser.APPROVE_OPTION){
-                try{
-                    File file = seletor.getSelectedFile();
-
-                    FileInputStream input=new FileInputStream(file);
-                    RTFEditorKit kit = new RTFEditorKit();
-                    kit.read(input,textArea.getDocument(),0);
-                    input.close();
-                    txt.setCaminho(file.getPath());
-                    //txt.setCaminho(file.getName());
-                    txt.setTitle(file.getName());
-                    titulo.setText(file.getName());
-                    System.out.println("Arquivo formatado carregado!!");
-                } catch(Exception ex){
-                    ex.printStackTrace();
-                }
-            }
-        });
         JButton bold = new JButton("B");
         JButton italic = new JButton("I");
         JButton under = new JButton("U");
