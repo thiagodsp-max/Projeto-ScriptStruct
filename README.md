@@ -18,7 +18,7 @@ Dentre as Funcionalidades prometidas, em desenvolvimento, estão:
 
 (100%) Estrutura Assíncrona, o aplicativo não dependerá de Internet
 
-(0%) Modelos de texto, para guiar o usuário ao escrever sobre algum elemento: Personagem, Ambiente, etc.
+(90%) Modelos de texto, para guiar o usuário ao escrever sobre algum elemento: Personagem, Ambiente, etc.
 
 # Guia de Usuário - Usando o Aplicativo
 
