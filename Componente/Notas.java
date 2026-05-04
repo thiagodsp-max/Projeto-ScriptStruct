@@ -3,15 +3,12 @@ package Componente;
 //Baseado no Conceito de Anotações
 
 public class Notas {
-    //Atributos
-    //int id;
     String nome;
     String descricao;
     boolean feito;
 
     //Construtor Inicial
     public Notas(String title){
-        //this.id=uni;
         this.nome=title;
         this.descricao="";
         this.feito=false;

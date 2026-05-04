@@ -36,6 +36,15 @@ public class Files {
         return content.toString();
     }
 
+    public static void renomear(String antigo, String novo){
+        File f = new File(BASE_PATH + antigo);
+        File n = new File(BASE_PATH + novo);
+
+        if(f.exists()){
+            f.renameTo(n);
+        }
+    }
+
     public static List<String> listaArquivo(String destino){
         List<String> arquivos = new ArrayList<>();
         File pasta = new File(BASE_PATH+destino);
@@ -91,12 +100,4 @@ public class Files {
         return tasks;
     }
 
-    public static void renomear(String antigo, String novo){
-        File f = new File(BASE_PATH + antigo);
-        File n = new File(BASE_PATH + novo);
-
-        if(f.exists()){
-            f.renameTo(n);
-        }
-    }
 }

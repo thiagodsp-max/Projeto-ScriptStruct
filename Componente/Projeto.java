@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Projeto {
-    //O Equivalente de Projeto
-    //Depende que já tenham sido criadas:
-    //- Categorias
-    //- Texto
+    //Depende que já tenham sido criadas: Arquivo e Pasta
     String name;
     List<Pasta> secao;
-    //= new ArrayList<>();
 
     public Projeto(String name){
         this.name = name;
@@ -19,14 +15,6 @@ public class Projeto {
 
     public String getName(){
         return name;
-    }
-
-    public List<Pasta> getSecao(){
-        return secao;
-    }
-
-    public void addSecao(Pasta v){
-        secao.add(v);
     }
 
     public void setName(String nova) {

@@ -16,16 +16,8 @@ public class Arquivo {
         return title;
     }
 
-    public String getStory(){
-        return story;
-    }
-
     public void setTitle(String titulo){
         this.title=titulo;
-    }
-
-    public void setStory(String letra){
-        this.story=letra;
     }
 
     public String getCaminho(){

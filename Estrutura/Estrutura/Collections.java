@@ -23,6 +23,14 @@ public class Collections extends Base{
     protected void changetela() {
         trocada(new ToDoList()); // padrão, pode sobrescrever
     }
+
+    private void loadlivro(){
+        List<String> nomes = Files.listaPasta("");
+        for(String name:nomes){
+            Projeto pr=new Projeto(name);
+            addBook(pr);
+        }
+    }
     //Janela feita para armazenar Livros/Lista de Notas
     @Override
     protected void montarConteudo() {
@@ -31,14 +39,6 @@ public class Collections extends Base{
         libros.setLayout(new BoxLayout(libros,BoxLayout.Y_AXIS));
         JScrollPane scroll= new JScrollPane(libros);
         conteudo.add(scroll,BorderLayout.CENTER);
-    }
-
-    private void loadlivro(){
-        List<String> nomes = Files.listaPasta("");
-        for(String name:nomes){
-            Projeto pr=new Projeto(name);
-            addBook(pr);
-        }
     }
 
     @Override
@@ -110,19 +110,5 @@ public class Collections extends Base{
         }
         dir.delete();
     }
-/*
-    public void addBook(Projeto Conto){
-        JPanel bookpanel = new JPanel();
-        JButton caderno = new JButton(Conto.getName());
-        caderno.addActionListener(e -> {
-            BookOrder sumario = new BookOrder(Conto);
-            trocada(sumario);
-        });
-        JButton rename = new JButton("F12");
-        bookpanel.add(caderno);
-        bookpanel.add(rename);
-        libros.add(bookpanel);
-        libros.revalidate();
-    }
- */
+
 }

@@ -1,7 +1,6 @@
 package Estrutura;
 import Componente.Projeto;
 import Controle.Tema;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +9,6 @@ public abstract class Base extends JPanel {
     protected JPanel conteudo;
     protected JPanel rodape;
     JLabel titulo;
-
     //Classe Abstrata que serve de Base para as Subclasses na Package
     protected Base() {
         setLayout(new BorderLayout());
@@ -24,7 +22,12 @@ public abstract class Base extends JPanel {
         Controle.Tema.loading();
     }
 
-    //protected abstract void montarCabecalho();
+    //Os 3 Componentes Estruturais: Conteudo, Cabeçalho e Rodape
+
+    protected abstract void montarConteudo();
+
+    protected abstract void montarRodape();
+
     protected void montarCabecalho(String botao, String title) {
         //Botão para ir prar outra Tela
         JButton back = new JButton(botao);
@@ -38,8 +41,6 @@ public abstract class Base extends JPanel {
 
         //Configuração de Formatação
         JPopupMenu menu = new JPopupMenu();
-        //JMenuItem fundo = new JMenuItem("Cor do Fundo");
-        //JMenuItem letra = new JMenuItem("Cor da Letra");
         JMenuItem light = new JMenuItem("Modo Claro");
         JMenuItem dark = new JMenuItem("Modo Escuro");
         JButton plus = new JButton("Config");
@@ -68,68 +69,12 @@ public abstract class Base extends JPanel {
             Tema.saving();
             aplicarTema();
         });
-
-        /*
-        fundo.addActionListener(e -> {
-            Color ground = JColorChooser.showDialog(this, "Escolha o cor do fundo", getBackground());
-            if (ground != null) {
-                //aplicarfundo(conteudo,ground);
-                Tema.back=ground;
-                Tema.saving();
-                aplicarTema();
-                repaint();
-            }
-        });
-        letra.addActionListener(e -> {
-            Color shine = JColorChooser.showDialog(this, "Escolha a cor dos elementos", getForeground());
-            if (shine != null) {
-                //aplicarcor(conteudo,shine);
-                //cabecalho.setBackground(shine);
-                //rodape.setBackground(shine);
-                Tema.fore=shine;
-                Tema.saving();
-                aplicarTema();
-                repaint();
-            }
-        });
-        menu.add(fundo);
-        menu.add(letra);
-         */
         menu.add(light);
         menu.add(dark);
         cabecalho.add(plus);
-
     }
-
-    protected abstract void montarConteudo();
-
-    protected abstract void montarRodape();
 
     //Métodos auxiliares de mudança
-    protected void aplicarfundo(Component piece,Color cor){
-        if(piece instanceof JComponent){
-            piece.setBackground(cor);
-        }
-        if(piece instanceof Container){
-            //Recursivamente aplicar cor em todos os elementos
-            for(Component child :((Container)piece).getComponents()){
-                aplicarfundo(child,cor);
-            }
-        }
-    }
-
-    protected void aplicarcor(Component piece,Color cor){
-        if(piece instanceof JComponent){
-            piece.setForeground(cor);
-        }
-        if(piece instanceof Container){
-            //Recursivamente aplicar cor em todos os elementos
-            for(Component child :((Container)piece).getComponents()){
-                aplicarcor(child,cor);
-            }
-        }
-    }
-    //Método de Trocar Telas
     public void trocada(JPanel novaTela) {
         if(novaTela instanceof Base){
             ((Base) novaTela).aplicarTema();

@@ -84,11 +84,11 @@ public class TextEditor extends Base{
                 FileInputStream input = new FileInputStream(file);
 
                 if (primeiraLinha != null && primeiraLinha.startsWith("{\\rtf")) {
-                    // 📄 É RTF
+                    // RTF
                     RTFEditorKit kit = new RTFEditorKit();
                     kit.read(input, textArea.getDocument(), 0);
                 } else {
-                    // 📝 É texto simples
+                    // Texto simples
                     String content = Files.leitura(txt.getCaminho());
                     textArea.setText(content);
                 }

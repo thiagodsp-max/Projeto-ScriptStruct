@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pasta {
-    //Depende que já se tenha criado a classe de Texto
-    //Equivalente à Pasta
+    //Depende que já se tenha criado a classe de Arquivo
     static String nome;
     static List<Arquivo> arquivos;
 
@@ -22,11 +21,4 @@ public class Pasta {
         nome=title;
     }
 
-    public static List<Arquivo> getTextos(){
-        return arquivos;
-    }
-
-    public void addTexto(Arquivo x){
-        arquivos.add(x);
-    }
 }

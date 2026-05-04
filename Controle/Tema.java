@@ -7,7 +7,6 @@ public class Tema {
     public static Color bgPrimary = Color.WHITE;
     public static Color bgSecondary = new Color(230,230,230);
     public static Color bgButton = new Color(200,200,200);
-
     public static Color fgPrimary = Color.BLACK;
     public static Color fgSecondary = Color.DARK_GRAY;
     public static Color fgButton = Color.BLACK;
@@ -36,7 +35,7 @@ public class Tema {
             fgSecondary = (Color) ois.readObject();
             fgButton = (Color) ois.readObject();
         } catch (Exception e) {
-            // primeira execução → ignora
+            //Ignora a primeira execução
         }
     }
 }
